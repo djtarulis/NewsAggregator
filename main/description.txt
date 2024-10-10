@@ -1,0 +1,70 @@
+News aggregator that pulls articles from various sources (using APIs like NewsAPI or web scraping) based on topics or keywords 
+the user is interested in. The aggregator will then perform sentiment analysis on the articles to categorize them as positive, 
+negative, or neutral. You can even display this information in a dashboard.
+
+Initial Tests:
+    First implementation of Vader and sentiment scores:
+
+    -------------------------------------------    Query Topic: 'technology'    ----------------------------------------------------------------------
+
+    1. This is the first smart lock to support ultra-wideband
+        Source: The Verge
+        Sentiment Score: -0.0857
+        Sentiment Category: Neutral
+        URL: https://www.theverge.com/2024/9/13/24243694/ultraloq-bolt-mission-uwb-matter-smart-lock-apple-home
+
+    2. U.S. Proposes Ban on Connected Car Technology From China and Russia
+        Source: Gizmodo.com
+        Sentiment Score: -0.0258
+        Sentiment Category: Neutral
+        URL: https://gizmodo.com/u-s-proposes-ban-on-connected-car-technology-from-china-and-russia-2000501899 
+
+    3. Everything We Know About Lebanon’s Exploding Pagers
+        Source: Gizmodo.com
+        Sentiment Score: -0.1706
+        Sentiment Category: Neutral
+        URL: https://gizmodo.com/everything-we-know-about-lebanons-exploding-pagers-2000500259
+
+    4. Gizmodo Science Fair: A Quiet Supersonic Jet
+        Source: Gizmodo.com
+        Sentiment Score: 0.3612
+        Sentiment Category: Positive
+        URL: https://gizmodo.com/science-fair-nasa-quesst-x59-supersonic-1851422984
+
+    5. Unbelievable, This “$1,000” Portable Printer Is Now Under $100 for Amazon Prime Day
+        Source: Gizmodo.com
+        Sentiment Score: -0.0258
+        Sentiment Category: Neutral
+        URL: https://gizmodo.com/unbelievable-this-1000-portable-printer-is-now-under-100-for-amazon-prime-day-2000508592
+
+    -------------------------------------------    Query Topic: 'politics'    ----------------------------------------------------------------------
+
+    1. The Confusing and Extremely Online Politics of Zyn Nicotine Pouches
+        Source: Gizmodo.com
+        Sentiment Score: 0.6542
+        Sentiment Category: Positive
+        URL: https://gizmodo.com/the-confusing-and-extremely-online-politics-of-zyn-nicotine-pouches-2000501419
+
+    2. Is Reform UK's plan to get Farage into No 10 mission impossible?
+        Source: BBC News
+        Sentiment Score: 0.7579
+        Sentiment Category: Positive
+        URL: https://www.bbc.com/news/articles/cp39yz3wdl9o
+
+    3. Who is Ryan Wesley Routh, suspect in Trump assassination attempt?
+        Source: BBC News
+        Sentiment Score: 0.6808
+        Sentiment Category: Positive
+        URL: https://www.bbc.com/news/articles/c3611zjjnd2o
+
+    4. Most US TikTok users aren’t following political accounts, study says
+        Source: Yahoo Entertainment
+        Sentiment Score: -0.2023
+        Sentiment Category: Negative
+        URL: https://consent.yahoo.com/v2/collectConsent?sessionId=1_cc-session_0845eb70-867a-4847-bc58-602ffe379e55
+
+    5. Laura Loomer: The ‘Free Spirit’ Whispering in Trump’s Ear
+        Source: Wired
+        Sentiment Score: -0.6249
+        Sentiment Category: Negative
+        URL: https://www.wired.com/story/laura-loomer-donald-trump/
