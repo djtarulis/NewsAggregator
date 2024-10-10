@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>News Sentiment Analysis</title>
+</head>
+<body>
+    <h1>News Sentiment Analysis</h1>
+    <form method="post" action="/">
+        <input type="text" name="query" placeholder="Enter topic" value="{{ query }}">
+        <select name="sentiment_filter">
+            <option value="all" {% if sentiment_filter == 'all' %}selected{% endif %}>All</option>
+            <option value="positive" {% if sentiment_filter == 'positive' %}selected{% endif %}>Positive</option>
+            <option value="negative" {% if sentiment_filter == 'negative' %}selected{% endif %}>Negative</option>
+            <option value="neutral" {% if sentiment_filter == 'neutral' %}selected{% endif %}>Neutral</option>
+        </select>
+        <button type="submit">Search</button>
+    </form>
+    <hr>
+    <h2>Results for "{{ query }}"</h2>
+    <ul>
+        {% for article in articles %}
+            <li>
+                <h3>{{ article['title'] }}</h3>
+                <p>Source: {{ article['source']['name'] }}</p>
+                <p>Sentiment: {{ article['sentiment_category'] }} (Score: {{ article['sentiment'] }})</p>
+                <p><a href="{{ article['url'] }}" target="_blank">Read more</a></p>
+            </li>
+            <hr>
+        {% endfor %}
+    </ul>
+</body>
+</html>
