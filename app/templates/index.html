@@ -15,6 +15,7 @@
             <option value="negative" {% if sentiment_filter == 'negative' %}selected{% endif %}>Negative</option>
             <option value="neutral" {% if sentiment_filter == 'neutral' %}selected{% endif %}>Neutral</option>
         </select>
+        <input type="hidden" name="page" value="{{ page }}">
         <button type="submit">Search</button>
     </form>
     <hr>
@@ -30,5 +31,25 @@
             <hr>
         {% endfor %}
     </ul>
+
+    <div>
+        <form method="post" action="/" style="display:inline;">
+            <input type="hidden" name="query" value="{{ query }}">
+            <input type="hidden" name="sentiment_filter" value="{{ sentiment_filter }}">
+            <input type="hidden" name="page" value="{{ page - 1 }}">
+            <button type="submit" {% if page <= 1 %}disabled{% endif %}>Previous</button>
+        </form>
+        <form method="post" action="/" style="display:inline;">
+            <input type="hidden" name="query" value="{{ query }}">
+            <input type="hidden" name="sentiment_filter" value="{{ sentiment_filter }}">
+            <input type="hidden" name="page" value="{{ page + 1 }}">
+            <button type="submit">Next</button>
+        </form>
+    </div>
+
+    <hr>
+    <h2>Sentiment Distribution Plot</h2>
+    <img src="/static/sentiment_distribution.png" alt="Sentiment Distribution">
+
 </body>
 </html>
