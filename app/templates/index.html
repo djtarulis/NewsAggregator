@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,11 +8,32 @@
     <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="/static/styles.css">
 </head>
+
 <body>
     <h1>News Sentiment Analysis</h1>
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
         <a class="navbar-brand" href="/">News Sentiment Analysis</a>
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav ml-auto">
+                {% if current_user.is_authenticated %}
+                <li class="nav-item">
+                    <a class="nav-link" href="#">Welcome, {{ current_user.username }}</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/logout">Logout</a>
+                </li>
+                {% else %}
+                <li class="nav-item">
+                    <a class="nav-link" href="/login">Login</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/register">Register</a>
+                </li>
+                {% endif %}
+            </ul>
+        </div>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
+            aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse" id="navbarNav">
@@ -22,69 +44,72 @@
             </ul>
         </div>
     </nav>
-    
+
     <div class="container mt-5">
-    <form method="post" action="/" class="form-inline mb-4">
-        <div class="form-group mr-2">
-        <input type="text" name="query" class="form-control" placeholder="Enter topic" value="{{ query }}">
-        </div>
-        <div class="form-group mr-2">
-        <select name="sentiment_filter">
-            <option value="all" {% if sentiment_filter == 'all' %}selected{% endif %}>All</option>
-            <option value="positive" {% if sentiment_filter == 'positive' %}selected{% endif %}>Positive</option>
-            <option value="negative" {% if sentiment_filter == 'negative' %}selected{% endif %}>Negative</option>
-            <option value="neutral" {% if sentiment_filter == 'neutral' %}selected{% endif %}>Neutral</option>
-        </select>
-        </div>
-        <input type="hidden" name="page" value="{{ page }}">
-        <button type="submit">Search</button>
-    </form>
-    <hr>
-    <h2>Results for "{{ query }}" (Page {{ page }})</h2>
-    <div class="row">
-        {% for article in articles %}
+        <form method="post" action="/" class="form-inline mb-4">
+            <div class="form-group mr-2">
+                <input type="text" name="query" class="form-control" placeholder="Enter topic" value="{{ query }}">
+            </div>
+            <div class="form-group mr-2">
+                <select name="sentiment_filter">
+                    <option value="all" {% if sentiment_filter=='all' %}selected{% endif %}>All</option>
+                    <option value="positive" {% if sentiment_filter=='positive' %}selected{% endif %}>Positive</option>
+                    <option value="negative" {% if sentiment_filter=='negative' %}selected{% endif %}>Negative</option>
+                    <option value="neutral" {% if sentiment_filter=='neutral' %}selected{% endif %}>Neutral</option>
+                </select>
+            </div>
+            <input type="hidden" name="page" value="{{ page }}">
+            <button type="submit">Search</button>
+        </form>
+        <hr>
+        <h2>Results for "{{ query }}" (Page {{ page }})</h2>
+        <div class="row">
+            {% for article in articles %}
             <div class="col-md-6 mb-4">
                 <div class="card">
                     <div class="card-body">
                         <h5 class="card-title">{{ article['title'] }}</h5>
                         <h6 class="card-subtitle mb-2 text-muted">Source: {{ article['source']['name'] }}</h6>
-                        <p class="card-text">Sentiment: <span class="badge {% if article['sentiment_category'] == 'Positive' %}badge-success{% elif article['sentiment_category'] == 'Negative' %}badge-danger{% else %}badge-secondary{% endif %}">{{ article['sentiment_category'] }}</span> (Score: {{ article['sentiment'] }})</p>
+                        <p class="card-text">Sentiment: <span
+                                class="badge {% if article['sentiment_category'] == 'Positive' %}badge-success{% elif article['sentiment_category'] == 'Negative' %}badge-danger{% else %}badge-secondary{% endif %}">{{
+                                article['sentiment_category'] }}</span> (Score: {{ article['sentiment'] }})</p>
                         <a href="{{ article['url'] }}" target="_blank" class="card-link">Read more</a>
                     </div>
                 </div>
             </div>
-        {% endfor %}
-    </div>
+            {% endfor %}
+        </div>
 
-    <div class="d-flex justify-content-between my-4">
-        <form method="post" action="/" class="form-inline">
-            <input type="hidden" name="query" value="{{ query }}">
-            <input type="hidden" name="sentiment_filter" value="{{ sentiment_filter }}">
-            <input type="hidden" name="page" value="{{ page - 1 }}">
-            <button type="submit" class="btn btn-secondary" {% if page <= 1 %}disabled{% endif %}>Previous</button>
-        </form>
-        <form method="post" action="/" class="form-inline">
-            <input type="hidden" name="query" value="{{ query }}">
-            <input type="hidden" name="sentiment_filter" value="{{ sentiment_filter }}">
-            <input type="hidden" name="page" value="{{ page + 1 }}">
-            <button type="submit" class="btn btn-secondary">Next</button>
-        </form>
-    </div>
+        <div class="d-flex justify-content-between my-4">
+            <form method="post" action="/" class="form-inline">
+                <input type="hidden" name="query" value="{{ query }}">
+                <input type="hidden" name="sentiment_filter" value="{{ sentiment_filter }}">
+                <input type="hidden" name="page" value="{{ page - 1 }}">
+                <button type="submit" class="btn btn-secondary" {% if page <=1 %}disabled{% endif %}>Previous</button>
+            </form>
+            <form method="post" action="/" class="form-inline">
+                <input type="hidden" name="query" value="{{ query }}">
+                <input type="hidden" name="sentiment_filter" value="{{ sentiment_filter }}">
+                <input type="hidden" name="page" value="{{ page + 1 }}">
+                <button type="submit" class="btn btn-secondary">Next</button>
+            </form>
+        </div>
 
-    <hr>
-    <h2>Sentiment Distribution Plot</h2>
-    <img src="/static/sentiment_distribution.png" alt="Sentiment Distribution">
+        <hr>
+        <h2>Sentiment Distribution Plot</h2>
+        <img src="/static/sentiment_distribution.png" alt="Sentiment Distribution">
 
-    <hr>
-    <h2>Sentiment Scores</h2>
-    <img src="/static/sentiment_scores.png" alt="Sentiment Scores">
+        <hr>
+        <h2>Sentiment Scores</h2>
+        <img src="/static/sentiment_scores.png" alt="Sentiment Scores">
 
-    <footer class="text-center mt-5">
-        <p>&copy; 2024 News Sentiment Analysis</p>
-    </footer>
+        <footer class="text-center mt-5">
+            <p>&copy; 2024 News Sentiment Analysis</p>
+        </footer>
 
-    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/js/bootstrap.bundle.min.js"></script>
+        <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/js/bootstrap.bundle.min.js"></script>
 
 </body>
+
 </html>
