@@ -15,7 +15,7 @@ analyzer = SentimentIntensityAnalyzer()
 # NewsAPI key
 NEWS_API_KEY = '51cac7033df04793a0f9f554d9bc0129'
 
-def fetch_news(api_key, query, language='en', page_size=25, page=1):
+def fetch_news(api_key, query, language='en', page_size=100, page=1):
     """
     Fetches news articles based on the provided query.
     
@@ -69,12 +69,27 @@ def save_sentiment_distribution_plot(articles, output_path='static/sentiment_dis
     plt.savefig(output_path)
     plt.close()
 
+def save__sentiment_scores(articles, output_path='static/sentiment_scores.png'):
+    # Extract the sentiment scores
+    sentiment_scores = [article['sentiment'] for article in articles]
+
+    # Plotting the histogram for sentiment scores
+    plt.figure(figsize=(10, 6))
+    plt.hist(sentiment_scores, bins=20, color='purple', edgecolor='black')
+    plt.title('Distribution of Sentiment Scores')
+    plt.xlabel('Sentiment Score')
+    plt.ylabel('Number of Articles')
+    plt.savefig(output_path)
+    plt.close()
+
 @app.route('/', methods=['GET', 'POST'])
 def index():
     query = request.form.get('query', 'technology') # default query
-    news_articles = fetch_news(NEWS_API_KEY, query) if query else []
     sentiment_filter = request.form.get('sentiment_filter', 'all')
     page = int(request.form.get('page', 1))
+    page_size = 15
+    news_articles = fetch_news(NEWS_API_KEY, query, page_size=page_size, page=page) if query else []
+
 
     # Apply sentiment filter
     if sentiment_filter!= 'all':
@@ -86,6 +101,7 @@ def index():
     # Save sentiment distribution plot
     if news_articles:
         save_sentiment_distribution_plot(news_articles)
+        save__sentiment_scores(news_articles)
 
     return render_template('index.html', articles=news_articles, query=query, sentiment_filter=sentiment_filter, page=page)
 
